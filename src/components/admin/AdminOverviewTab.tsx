@@ -288,7 +288,94 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({ onNavigateTa
     };
   };
 
-  // 3. COMPUTED METRICS FOR THE SELECTED DATE CUT
+  // Pre-index posts by businessId for fast, single-pass lookup
+  const postsByBusinessId = useMemo(() => {
+    const map = new Map<string, Post[]>();
+    filteredPosts.forEach((p) => {
+      const list = map.get(p.businessId) || [];
+      list.push(p);
+      map.set(p.businessId, list);
+    });
+    return map;
+  }, [filteredPosts]);
+
+  // Helper to get aggregated daily metric for a business (summing its posts if it has any, or using business profile)
+  const getAggregatedBusinessDayRecord = (biz: Business, dateKey: string): DailyMetricRecord => {
+    const bPosts = postsByBusinessId.get(biz.id);
+    if (bPosts && bPosts.length > 0) {
+      let views = 0;
+      let whatsappClicks = 0;
+      let mapsClicks = 0;
+      let calls = 0;
+      let shares = 0;
+      let qrRedemptions = 0;
+      bPosts.forEach((p) => {
+        const d = getPostDayRecord(p, dateKey);
+        views += d.views;
+        whatsappClicks += d.whatsappClicks;
+        mapsClicks += d.mapsClicks;
+        calls += d.calls;
+        shares += d.shares;
+        qrRedemptions += d.qrRedemptions || 0;
+      });
+      return { views, whatsappClicks, mapsClicks, calls, shares, qrRedemptions };
+    }
+    return getBusinessDayRecord(biz, dateKey);
+  };
+
+  // Precomputed cut metrics per business to guarantee 100% correlation between cards, charts, and table
+  const businessCutMetricsMap = useMemo(() => {
+    const map = new Map<
+      string,
+      {
+        views: number;
+        whatsapp: number;
+        maps: number;
+        calls: number;
+        shares: number;
+        qrRedemptions: number;
+        totalLeads: number;
+        convRate: string;
+      }
+    >();
+
+    filteredBusinesses.forEach((biz) => {
+      let bViews = 0;
+      let bWa = 0;
+      let bMaps = 0;
+      let bCalls = 0;
+      let bShares = 0;
+      let bQr = 0;
+
+      rangeDateKeys.forEach((key) => {
+        const d = getAggregatedBusinessDayRecord(biz, key);
+        bViews += d.views;
+        bWa += d.whatsappClicks;
+        bMaps += d.mapsClicks;
+        bCalls += d.calls;
+        bShares += d.shares;
+        bQr += d.qrRedemptions || 0;
+      });
+
+      const totalLeads = bWa + bMaps + bCalls;
+      const convRate = bViews > 0 ? ((totalLeads / bViews) * 100).toFixed(1) : '0';
+
+      map.set(biz.id, {
+        views: bViews,
+        whatsapp: bWa,
+        maps: bMaps,
+        calls: bCalls,
+        shares: bShares,
+        qrRedemptions: bQr,
+        totalLeads,
+        convRate,
+      });
+    });
+
+    return map;
+  }, [filteredBusinesses, rangeDateKeys, postsByBusinessId, guaranteedPostDailyMap, guaranteedBusinessDailyMap]);
+
+  // 3. COMPUTED METRICS FOR THE SELECTED DATE CUT (Exact sum of merchants in cut)
   const {
     cutViews,
     cutWhatsapp,
@@ -306,28 +393,13 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({ onNavigateTa
     let shares = 0;
     let qr = 0;
 
-    rangeDateKeys.forEach((key) => {
-      // Aggregate from posts
-      filteredPosts.forEach((post) => {
-        const d = getPostDayRecord(post, key);
-        views += d.views;
-        wa += d.whatsappClicks;
-        maps += d.mapsClicks;
-        calls += d.calls;
-        shares += d.shares;
-        qr += d.qrRedemptions || 0;
-      });
-
-      // Aggregate direct business profile views
-      filteredBusinesses.forEach((biz) => {
-        const d = getBusinessDayRecord(biz, key);
-        views += d.views;
-        wa += d.whatsappClicks;
-        maps += d.mapsClicks;
-        calls += d.calls;
-        shares += d.shares;
-        qr += d.qrRedemptions || 0;
-      });
+    businessCutMetricsMap.forEach((m) => {
+      views += m.views;
+      wa += m.whatsapp;
+      maps += m.maps;
+      calls += m.calls;
+      shares += m.shares;
+      qr += m.qrRedemptions;
     });
 
     const totalLeads = wa + maps + calls;
@@ -343,7 +415,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({ onNavigateTa
       cutTotalLeads: totalLeads,
       cutConversionRate: convRate,
     };
-  }, [rangeDateKeys, filteredPosts, filteredBusinesses, guaranteedPostDailyMap, guaranteedBusinessDailyMap]);
+  }, [businessCutMetricsMap]);
 
   // 4. FINANCIAL & CARTERA CALCULATIONS
   const totalBusinesses = filteredBusinesses.length;
@@ -443,7 +515,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({ onNavigateTa
     }).format(val);
   };
 
-  // 6. TIMELINE CHART SERIES
+  // 6. TIMELINE CHART SERIES (Matches Top KPIs exactly)
   const timelineData = useMemo(() => {
     return rangeDateKeys.map((dateKey) => {
       let dayViews = 0;
@@ -451,16 +523,8 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({ onNavigateTa
       let dayMaps = 0;
       let dayCalls = 0;
 
-      filteredPosts.forEach((post) => {
-        const d = getPostDayRecord(post, dateKey);
-        dayViews += d.views;
-        dayWa += d.whatsappClicks;
-        dayMaps += d.mapsClicks;
-        dayCalls += d.calls;
-      });
-
       filteredBusinesses.forEach((biz) => {
-        const d = getBusinessDayRecord(biz, dateKey);
+        const d = getAggregatedBusinessDayRecord(biz, dateKey);
         dayViews += d.views;
         dayWa += d.whatsappClicks;
         dayMaps += d.mapsClicks;
@@ -482,7 +546,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({ onNavigateTa
         llamadas: dayCalls,
       };
     });
-  }, [rangeDateKeys, filteredPosts, filteredBusinesses, guaranteedPostDailyMap, guaranteedBusinessDailyMap, cutDays]);
+  }, [rangeDateKeys, filteredBusinesses, postsByBusinessId, guaranteedPostDailyMap, guaranteedBusinessDailyMap, cutDays]);
 
   // Evenly spaced ticks
   const timelineTicks = useMemo(() => {
@@ -496,7 +560,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({ onNavigateTa
     return uniqueIndices.map((idx) => timelineData[idx].name);
   }, [timelineData]);
 
-  // 7. DAY OF WEEK DEMAND (Highlights Peak Day)
+  // 7. DAY OF WEEK DEMAND (Highlights Peak Day, matches Top KPIs exactly)
   const dayActivityData = useMemo(() => {
     const daysOrder = [
       { day: 'Lun', diaCompleto: 'Lunes', dayIdx: 1 },
@@ -516,12 +580,8 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({ onNavigateTa
         const dayOfWeek = isNaN(d.getTime()) ? 1 : d.getDay();
 
         let dayInteractions = 0;
-        filteredPosts.forEach((p) => {
-          const m = getPostDayRecord(p, dateKey);
-          dayInteractions += m.whatsappClicks + m.mapsClicks + m.calls;
-        });
-        filteredBusinesses.forEach((b) => {
-          const m = getBusinessDayRecord(b, dateKey);
+        filteredBusinesses.forEach((biz) => {
+          const m = getAggregatedBusinessDayRecord(biz, dateKey);
           dayInteractions += m.whatsappClicks + m.mapsClicks + m.calls;
         });
 
@@ -539,7 +599,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({ onNavigateTa
         esPico: count === maxVal && maxVal > 0,
       };
     });
-  }, [rangeDateKeys, filteredPosts, filteredBusinesses, guaranteedPostDailyMap, guaranteedBusinessDailyMap]);
+  }, [rangeDateKeys, filteredBusinesses, postsByBusinessId, guaranteedPostDailyMap, guaranteedBusinessDailyMap]);
 
   // 8. CHANNELS DISTRIBUTION IN CUT
   const channelData = useMemo(() => {
@@ -711,23 +771,8 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({ onNavigateTa
 
     if (tableFilter === 'top_leads') {
       list.sort((a, b) => {
-        const aPosts = posts.filter((p) => p.businessId === a.id);
-        const bPosts = posts.filter((p) => p.businessId === b.id);
-
-        let aLeads = 0;
-        let bLeads = 0;
-
-        rangeDateKeys.forEach((k) => {
-          aPosts.forEach((p) => {
-            const d = getPostDayRecord(p, k);
-            aLeads += d.whatsappClicks + d.mapsClicks + d.calls;
-          });
-          bPosts.forEach((p) => {
-            const d = getPostDayRecord(p, k);
-            bLeads += d.whatsappClicks + d.mapsClicks + d.calls;
-          });
-        });
-
+        const aLeads = businessCutMetricsMap.get(a.id)?.totalLeads || 0;
+        const bLeads = businessCutMetricsMap.get(b.id)?.totalLeads || 0;
         return bLeads - aLeads;
       });
     } else if (tableFilter === 'attention_needed') {
@@ -1718,34 +1763,23 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({ onNavigateTa
                 </tr>
               ) : (
                 displayedMerchants.map((b) => {
-                  const bizPosts = posts.filter((p) => p.businessId === b.id);
-                  const bizActivePosts = bizPosts.filter((p) => isPostActive(p));
-
-                  let bViews = 0;
-                  let bWhatsapp = 0;
-                  let bMaps = 0;
-                  let bCalls = 0;
-
-                  rangeDateKeys.forEach((k) => {
-                    if (bizPosts.length > 0) {
-                      bizPosts.forEach((p) => {
-                        const d = getPostDayRecord(p, k);
-                        bViews += d.views;
-                        bWhatsapp += d.whatsappClicks;
-                        bMaps += d.mapsClicks;
-                        bCalls += d.calls;
-                      });
-                    } else {
-                      const d = getBusinessDayRecord(b, k);
-                      bViews += d.views;
-                      bWhatsapp += d.whatsappClicks;
-                      bMaps += d.mapsClicks;
-                      bCalls += d.calls;
-                    }
-                  });
-
-                  const totalBizLeads = bWhatsapp + bMaps + bCalls;
-                  const conv = bViews > 0 ? ((totalBizLeads / bViews) * 100).toFixed(1) : '0';
+                  const bizActivePosts = (postsByBusinessId.get(b.id) || []).filter((p) => isPostActive(p));
+                  const m = businessCutMetricsMap.get(b.id) || {
+                    views: 0,
+                    whatsapp: 0,
+                    maps: 0,
+                    calls: 0,
+                    shares: 0,
+                    qrRedemptions: 0,
+                    totalLeads: 0,
+                    convRate: '0',
+                  };
+                  const bViews = m.views;
+                  const bWhatsapp = m.whatsapp;
+                  const bMaps = m.maps;
+                  const bCalls = m.calls;
+                  const totalBizLeads = m.totalLeads;
+                  const conv = m.convRate;
 
                   const isExpired =
                     b.subscription?.status === 'expired' ||

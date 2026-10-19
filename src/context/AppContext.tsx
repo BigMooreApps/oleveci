@@ -37,6 +37,7 @@ import {
   DEFAULT_PREDEFINED_PASSWORD,
   getNextConsecutiveUsername,
 } from '../utils/credentialUtils';
+import { supabaseService } from '../services/supabaseService';
 
 interface AppContextType {
   // State
@@ -1097,6 +1098,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, [businessNotifications]);
 
+  // Synchronize data from Supabase cloud on mount
+  useEffect(() => {
+    supabaseService.fetchAll().then((cloud) => {
+      if (!cloud) return;
+      if (cloud.businesses && cloud.businesses.length > 0) setBusinesses(cloud.businesses);
+      if (cloud.posts && cloud.posts.length > 0) setPosts(cloud.posts);
+      if (cloud.municipalities && cloud.municipalities.length > 0) setMunicipalities(cloud.municipalities);
+      if (cloud.sectors && cloud.sectors.length > 0) setSectors(cloud.sectors);
+      if (cloud.categories && cloud.categories.length > 0) setCategories(cloud.categories);
+      if (cloud.planCategories && cloud.planCategories.length > 0) setPlanCategories(cloud.planCategories);
+      if (cloud.postTypes && cloud.postTypes.length > 0) setPostTypes(cloud.postTypes);
+    });
+  }, []);
+
   // Limpiar notificaciones obsoletas de publicaciones que ya están en revisión o activas para que no se queden pegadas
   useEffect(() => {
     setBusinessNotifications((prev) => {
@@ -1269,13 +1284,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             Object.entries(p.metrics.dailyMetrics).forEach(([dateKey, mVal]) => {
               const dayM = mVal as DailyMetricRecord;
               if (!aggregatedDaily[dateKey]) {
-                aggregatedDaily[dateKey] = { views: 0, whatsappClicks: 0, mapsClicks: 0, calls: 0, shares: 0 };
+                aggregatedDaily[dateKey] = { views: 0, whatsappClicks: 0, mapsClicks: 0, calls: 0, shares: 0, qrRedemptions: 0 };
               }
               aggregatedDaily[dateKey].views += dayM.views || 0;
               aggregatedDaily[dateKey].whatsappClicks += dayM.whatsappClicks || 0;
               aggregatedDaily[dateKey].mapsClicks += dayM.mapsClicks || 0;
               aggregatedDaily[dateKey].calls += dayM.calls || 0;
               aggregatedDaily[dateKey].shares += dayM.shares || 0;
+              aggregatedDaily[dateKey].qrRedemptions = (aggregatedDaily[dateKey].qrRedemptions || 0) + (dayM.qrRedemptions || 0);
             });
           }
         });
@@ -1291,11 +1307,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                 mapsClicks: bizPosts.reduce((acc, p) => acc + (p.metrics?.mapsClicks || 0), 0),
                 calls: bizPosts.reduce((acc, p) => acc + (p.metrics?.calls || 0), 0),
                 shares: bizPosts.reduce((acc, p) => acc + (p.metrics?.shares || 0), 0),
+                qrRedemptions: bizPosts.reduce((acc, p) => acc + (p.metrics?.qrRedemptions || 0), 0),
                 dailyMetrics: aggregatedDaily,
               },
             };
           })
         );
+      }
+
+      if (targetBizId) {
+        supabaseService.recordInteraction(targetBizId, postId, type);
       }
 
       return nextPosts;
@@ -1613,6 +1634,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         };
       })
     );
+    supabaseService.recordInteraction(businessId, undefined, type);
   };
 
   const toggleFavorite = (postId: string) => {
@@ -1676,6 +1698,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setPosts((prev) => [newPost, ...prev]);
+    supabaseService.upsertPost(newPost);
 
     // Send push notification simulation
     simulatePushNotification(
@@ -1688,12 +1711,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const updatePost = (postId: string, data: Partial<Post>) => {
     setPosts((prev) =>
-      prev.map((post) => (post.id === postId ? { ...post, ...data } : post))
+      prev.map((post) => {
+        if (post.id !== postId) return post;
+        const updated = { ...post, ...data };
+        supabaseService.upsertPost(updated);
+        return updated;
+      })
     );
   };
 
   const deletePost = (postId: string) => {
     addDeletedPostId(postId);
+    supabaseService.deletePost(postId);
     setPosts((prev) => prev.filter((post) => post.id !== postId));
   };
 
@@ -2014,7 +2043,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const updateBusiness = (businessId: string, data: Partial<Business>) => {
     setBusinesses((prev) =>
-      prev.map((biz) => (biz.id === businessId ? { ...biz, ...data } : biz))
+      prev.map((biz) => {
+        if (biz.id !== businessId) return biz;
+        const updated = { ...biz, ...data };
+        supabaseService.upsertBusiness(updated);
+        return updated;
+      })
     );
     if (
       data.name !== undefined ||
@@ -2492,6 +2526,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setBusinesses((prev) => [newBiz, ...prev]);
+    supabaseService.upsertBusiness(newBiz);
     setAuthenticatedBusinessId(newId);
     setCurrentBusinessId(newId);
     setCurrentRole('business');
@@ -2535,11 +2570,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setBusinesses((prev) => [newBiz, ...prev]);
+    supabaseService.upsertBusiness(newBiz);
     return newBiz;
   };
 
   const deleteBusiness = (businessId: string) => {
     addDeletedBusinessId(businessId);
+    supabaseService.deleteBusiness(businessId);
     setBusinesses((prev) => prev.filter((b) => b.id !== businessId));
     // CASCADE: Delete all posts belonging to this business and record their deletion
     posts.filter((p) => p.businessId === businessId).forEach((p) => addDeletedPostId(p.id));

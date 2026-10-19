@@ -2407,3 +2407,43 @@ INITIAL_POSTS.forEach((p) => {
   if (!p.aspectRatio) p.aspectRatio = '9:16';
   if (!p.imageFit) p.imageFit = 'cover';
 });
+
+// Synchronize initial businesses metrics and daily distributions with the exact sum of their posts
+INITIAL_BUSINESSES.forEach((b) => {
+  const bizPosts = INITIAL_POSTS.filter((p) => p.businessId === b.id);
+  if (bizPosts.length > 0) {
+    const views = bizPosts.reduce((acc, p) => acc + (p.metrics?.views || 0), 0);
+    const whatsappClicks = bizPosts.reduce((acc, p) => acc + (p.metrics?.whatsappClicks || 0), 0);
+    const mapsClicks = bizPosts.reduce((acc, p) => acc + (p.metrics?.mapsClicks || 0), 0);
+    const calls = bizPosts.reduce((acc, p) => acc + (p.metrics?.calls || 0), 0);
+    const shares = bizPosts.reduce((acc, p) => acc + (p.metrics?.shares || 0), 0);
+    const qrRedemptions = bizPosts.reduce((acc, p) => acc + (p.metrics?.qrRedemptions || 0), 0);
+
+    const aggregatedDaily: Record<string, import('../types').DailyMetricRecord> = {};
+    bizPosts.forEach((p) => {
+      if (p.metrics?.dailyMetrics) {
+        Object.entries(p.metrics.dailyMetrics).forEach(([dateKey, dayM]) => {
+          if (!aggregatedDaily[dateKey]) {
+            aggregatedDaily[dateKey] = { views: 0, whatsappClicks: 0, mapsClicks: 0, calls: 0, shares: 0, qrRedemptions: 0 };
+          }
+          aggregatedDaily[dateKey].views += dayM.views || 0;
+          aggregatedDaily[dateKey].whatsappClicks += dayM.whatsappClicks || 0;
+          aggregatedDaily[dateKey].mapsClicks += dayM.mapsClicks || 0;
+          aggregatedDaily[dateKey].calls += dayM.calls || 0;
+          aggregatedDaily[dateKey].shares += dayM.shares || 0;
+          aggregatedDaily[dateKey].qrRedemptions = (aggregatedDaily[dateKey].qrRedemptions || 0) + (dayM.qrRedemptions || 0);
+        });
+      }
+    });
+
+    b.metrics = {
+      views,
+      whatsappClicks,
+      mapsClicks,
+      calls,
+      shares,
+      qrRedemptions,
+      dailyMetrics: aggregatedDaily,
+    };
+  }
+});

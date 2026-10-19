@@ -234,6 +234,7 @@ export const BusinessMetricsDashboard: React.FC<BusinessMetricsDashboardProps> =
       mapsClicks: Math.max(0, Math.round((totals.mapsClicks || 0) * factor)),
       calls: Math.max(0, Math.round((totals.calls || 0) * factor)),
       shares: Math.max(0, Math.round((totals.shares || 0) * factor)),
+      qrRedemptions: 0,
     };
   };
 
@@ -254,6 +255,7 @@ export const BusinessMetricsDashboard: React.FC<BusinessMetricsDashboardProps> =
       mapsClicks: Math.max(0, Math.round((totals.mapsClicks || 0) * factor)),
       calls: Math.max(0, Math.round((totals.calls || 0) * factor)),
       shares: Math.max(0, Math.round((totals.shares || 0) * factor)),
+      qrRedemptions: 0,
     };
   };
 
