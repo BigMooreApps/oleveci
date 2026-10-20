@@ -2,6 +2,9 @@ import { supabase } from '../utils/supabaseClient';
 import { Business, Post, Municipality, CitySector, Category, PlanCategory, PostTypeConfig } from '../types';
 import { SimulatedReadyPlan } from '../data/readyPlansData';
 import { THEMES } from '../components/InvitationCardPreview';
+import { storageService } from './storageService';
+
+export { storageService };
 
 /**
  * Supabase Data Service for OleVeci
@@ -60,12 +63,22 @@ export const supabaseService = {
    */
   async upsertBusiness(business: Business) {
     try {
+      let finalLogo = business.logo || null;
+      let finalCover = business.coverImage || null;
+
+      if (finalLogo && finalLogo.startsWith('data:')) {
+        finalLogo = (await storageService.optimizeMediaUrl(finalLogo, 'businesses')) || finalLogo;
+      }
+      if (finalCover && finalCover.startsWith('data:')) {
+        finalCover = (await storageService.optimizeMediaUrl(finalCover, 'businesses')) || finalCover;
+      }
+
       const dbRecord = {
         id: business.id,
         name: business.name,
         slug: business.slug,
-        logo: business.logo || null,
-        cover_image: business.coverImage || null,
+        logo: finalLogo,
+        cover_image: finalCover,
         description: business.description || null,
         category_id: business.categoryId || null,
         sub_category: business.subCategory || null,
@@ -116,6 +129,16 @@ export const supabaseService = {
    */
   async upsertPost(post: Post) {
     try {
+      let finalImageUrl = post.imageUrl || null;
+      let finalVideoUrl = post.videoUrl || null;
+
+      if (finalImageUrl && finalImageUrl.startsWith('data:')) {
+        finalImageUrl = (await storageService.optimizeMediaUrl(finalImageUrl, 'posts')) || finalImageUrl;
+      }
+      if (finalVideoUrl && finalVideoUrl.startsWith('data:')) {
+        finalVideoUrl = (await storageService.optimizeMediaUrl(finalVideoUrl, 'posts')) || finalVideoUrl;
+      }
+
       const dbRecord = {
         id: post.id,
         business_id: post.businessId,
@@ -131,8 +154,8 @@ export const supabaseService = {
         type: post.type,
         title: post.title,
         description: post.description || null,
-        image_url: post.imageUrl || null,
-        video_url: post.videoUrl || null,
+        image_url: finalImageUrl,
+        video_url: finalVideoUrl,
         media_type: post.mediaType || 'image',
         aspect_ratio: post.aspectRatio || '9:16',
         image_fit: post.imageFit || 'cover',
@@ -172,6 +195,11 @@ export const supabaseService = {
    */
   async upsertReadyPlan(plan: SimulatedReadyPlan) {
     try {
+      let finalCover = plan.coverImage || null;
+      if (finalCover && finalCover.startsWith('data:')) {
+        finalCover = (await storageService.optimizeMediaUrl(finalCover, 'itineraries')) || finalCover;
+      }
+
       const dbRecord = {
         id: plan.id,
         title: plan.planTitle || 'Plan Sugerido',
@@ -182,10 +210,10 @@ export const supabaseService = {
         budget_num: plan.estimatedBudget || 0,
         duration: plan.scheduledTime || '2 a 3 horas',
         highlight: plan.personalNote || null,
-        cover_image: plan.coverImage || null,
+        cover_image: finalCover,
         stops: plan.postIds || [],
         is_active: true,
-        plan_data: plan,
+        plan_data: { ...plan, coverImage: finalCover || plan.coverImage },
       };
       await supabase.from('ready_plans').upsert(dbRecord);
     } catch (err) {

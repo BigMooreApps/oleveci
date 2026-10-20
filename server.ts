@@ -8,6 +8,8 @@ import { INITIAL_POSTS, INITIAL_BUSINESSES } from './src/data/seedData';
 import { READY_PLANS_SEED, SimulatedReadyPlan } from './src/data/readyPlansData';
 import { Post, Business } from './src/types';
 import { renderPostCardImage } from './server/cardRenderer';
+import webpush from 'web-push';
+import { supabase } from './src/utils/supabaseClient';
 
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
@@ -442,6 +444,161 @@ app.get('/api/plans/:id', (req, res) => {
 });
 
 // Endpoint para guardar o sincronizar un itinerario personalizado
+
+// --- Web Push Notifications & VAPID Setup ---
+const VAPID_KEYS_FILE = path.join(process.cwd(), 'server', 'vapid_keys.json');
+let vapidKeys = {
+  publicKey: process.env.VAPID_PUBLIC_KEY || '',
+  privateKey: process.env.VAPID_PRIVATE_KEY || '',
+};
+
+if (!vapidKeys.publicKey || !vapidKeys.privateKey) {
+  if (fs.existsSync(VAPID_KEYS_FILE)) {
+    try {
+      const saved = JSON.parse(fs.readFileSync(VAPID_KEYS_FILE, 'utf-8'));
+      if (saved.publicKey && saved.privateKey) {
+        vapidKeys = saved;
+      }
+    } catch {}
+  }
+  if (!vapidKeys.publicKey || !vapidKeys.privateKey) {
+    vapidKeys = webpush.generateVAPIDKeys();
+    try {
+      fs.mkdirSync(path.dirname(VAPID_KEYS_FILE), { recursive: true });
+      fs.writeFileSync(VAPID_KEYS_FILE, JSON.stringify(vapidKeys, null, 2), 'utf-8');
+    } catch (e) {
+      console.warn('Could not save vapid_keys.json:', e);
+    }
+  }
+}
+
+try {
+  webpush.setVapidDetails(
+    process.env.VAPID_SUBJECT || 'mailto:soporte@oleveci.com',
+    vapidKeys.publicKey,
+    vapidKeys.privateKey
+  );
+  console.log('[WebPush] VAPID configured. Public Key ready.');
+} catch (e: any) {
+  console.warn('[WebPush] Error setting VAPID details:', e?.message);
+}
+
+// Endpoint para consultar clave pública VAPID
+app.get('/api/push/vapid-public-key', (_req, res) => {
+  res.json({ publicKey: vapidKeys.publicKey });
+});
+
+// Endpoint para registrar o actualizar suscripción Web Push
+app.post('/api/push/subscribe', async (req, res) => {
+  try {
+    const { subscription, city, sector, userAgent } = req.body;
+    if (!subscription || !subscription.endpoint || !subscription.keys?.p256dh || !subscription.keys?.auth) {
+      return res.status(400).json({ error: 'Suscripción inválida' });
+    }
+
+    try {
+      await supabase.from('push_subscriptions').upsert({
+        endpoint: subscription.endpoint,
+        p256dh: subscription.keys.p256dh,
+        auth: subscription.keys.auth,
+        city: city || null,
+        sector: sector || null,
+        user_agent: userAgent || null,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'endpoint' });
+    } catch (dbErr) {
+      console.warn('[WebPush] Advertencia guardando en Supabase:', dbErr);
+    }
+
+    const subsPath = path.join(process.cwd(), 'server', 'subscriptions.json');
+    let localSubs: any[] = [];
+    if (fs.existsSync(subsPath)) {
+      try { localSubs = JSON.parse(fs.readFileSync(subsPath, 'utf-8')); } catch {}
+    }
+    const filtered = localSubs.filter((s) => s.endpoint !== subscription.endpoint);
+    filtered.push({ ...subscription, city, sector, updatedAt: new Date().toISOString() });
+    try { fs.writeFileSync(subsPath, JSON.stringify(filtered, null, 2), 'utf-8'); } catch {}
+
+    return res.json({ ok: true, message: 'Suscripción registrada con éxito' });
+  } catch (error: any) {
+    console.error('[WebPush] Error en subscribe:', error);
+    return res.status(500).json({ error: error?.message || 'Error interno' });
+  }
+});
+
+// Endpoint para emitir notificación push a dispositivos suscritos
+app.post('/api/push/send', async (req, res) => {
+  try {
+    const { title, body, url, icon, badge, city, sector } = req.body;
+    if (!title || !body) {
+      return res.status(400).json({ error: 'Título y mensaje son obligatorios' });
+    }
+
+    const payload = JSON.stringify({
+      title,
+      body,
+      url: url || '/',
+      icon: icon || '/pwa-192x192.png',
+      badge: badge || '/favicon-32x32.png',
+    });
+
+    let subscriptions: any[] = [];
+    try {
+      let query = supabase.from('push_subscriptions').select('*');
+      if (city) {
+        query = query.or(`city.eq.${city},city.is.null`);
+      }
+      const { data, error } = await query;
+      if (!error && data && data.length > 0) {
+        subscriptions = data.map((d) => ({
+          endpoint: d.endpoint,
+          keys: {
+            p256dh: d.p256dh,
+            auth: d.auth,
+          },
+        }));
+      }
+    } catch {}
+
+    if (subscriptions.length === 0) {
+      const subsPath = path.join(process.cwd(), 'server', 'subscriptions.json');
+      if (fs.existsSync(subsPath)) {
+        try {
+          const raw = JSON.parse(fs.readFileSync(subsPath, 'utf-8'));
+          subscriptions = raw.map((s: any) => ({
+            endpoint: s.endpoint,
+            keys: s.keys,
+          }));
+        } catch {}
+      }
+    }
+
+    let sent = 0;
+    let failed = 0;
+
+    await Promise.all(
+      subscriptions.map(async (sub) => {
+        try {
+          await webpush.sendNotification(sub, payload);
+          sent++;
+        } catch (err: any) {
+          failed++;
+          if (err.statusCode === 410 || err.statusCode === 404) {
+            try {
+              await supabase.from('push_subscriptions').delete().eq('endpoint', sub.endpoint);
+            } catch {}
+          }
+        }
+      })
+    );
+
+    return res.json({ success: true, sent, failed, totalTargets: subscriptions.length });
+  } catch (error: any) {
+    console.error('[WebPush] Error enviando push:', error);
+    return res.status(500).json({ error: error?.message || 'Error enviando push' });
+  }
+});
+
 app.post('/api/plans', (req, res) => {
   try {
     const plan = req.body as SimulatedReadyPlan;

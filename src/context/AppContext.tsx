@@ -37,7 +37,7 @@ import {
   DEFAULT_PREDEFINED_PASSWORD,
   getNextConsecutiveUsername,
 } from '../utils/credentialUtils';
-import { supabaseService } from '../services/supabaseService';
+import { supabaseService, storageService } from '../services/supabaseService';
 
 interface AppContextType {
   // State

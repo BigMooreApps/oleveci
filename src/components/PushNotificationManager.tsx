@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
+import { subscribeUserToPush, unsubscribeUserFromPush } from '../utils/pushManager';
 import { Bell, BellOff, BellRing, Check, ShieldCheck, X } from 'lucide-react';
 
 interface PushNotificationManagerProps {
@@ -12,6 +13,8 @@ export const PushNotificationManager: React.FC<PushNotificationManagerProps> = (
     notificationPrefs,
     setNotificationPrefs,
     simulatePushNotification,
+    currentCity,
+    currentSector,
   } = useApp();
 
   const [permissionState, setPermissionState] = useState<NotificationPermission>('default');
@@ -30,7 +33,9 @@ export const PushNotificationManager: React.FC<PushNotificationManagerProps> = (
     if (isEnabled) {
       // Despulsar: desactivar notificaciones
       setNotificationPrefs((prev) => ({ ...prev, enabled: false }));
+      unsubscribeUserFromPush().catch(() => {});
     } else {
+      subscribeUserToPush({ city: currentCity, sector: currentSector }).catch(() => {});
       // Pulsar: activar notificaciones
       if (typeof window !== 'undefined' && 'Notification' in window) {
         try {
