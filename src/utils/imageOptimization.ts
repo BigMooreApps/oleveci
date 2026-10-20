@@ -4,6 +4,40 @@
  * saving up to 80% mobile data and accelerating rendering times.
  */
 
+export const SUPABASE_CDN_BASE = 'https://gpdqjihnnjetoxxfsfxh.supabase.co/storage/v1/object/public/oleveci-media';
+
+export const BRAND_ASSETS = {
+  iconPng: `${SUPABASE_CDN_BASE}/brand/Icono_Oleveci_sin_fondo.png`,
+  logoPng: `${SUPABASE_CDN_BASE}/brand/Logo_OleVeci.png`,
+  welcomePoster: `${SUPABASE_CDN_BASE}/posts/poster_bienvenida.jpg`,
+  welcomeVideo: `${SUPABASE_CDN_BASE}/posts/Video_de_bienvenida.mp4`,
+};
+
+/**
+ * Resolves local relative brand and media assets to high-speed Supabase CDN public storage,
+ * preventing 404s and broken image/video icons across reverse proxies and static hosts.
+ */
+export const resolveMediaUrl = (url?: string | null): string => {
+  if (!url || typeof url !== 'string') return '';
+  const trimmed = url.trim();
+  const cleanPath = trimmed.split('?')[0].replace(/^\.?\//, '/');
+
+  if (cleanPath.endsWith('/Icono_Oleveci_sin_fondo.png') || cleanPath === '/Icono_Oleveci_sin_fondo.png') {
+    return BRAND_ASSETS.iconPng;
+  }
+  if (cleanPath.endsWith('/Logo_OleVeci.png') || cleanPath === '/Logo_OleVeci.png') {
+    return BRAND_ASSETS.logoPng;
+  }
+  if (cleanPath.endsWith('/poster_bienvenida.jpg') || cleanPath === '/poster_bienvenida.jpg') {
+    return BRAND_ASSETS.welcomePoster;
+  }
+  if (cleanPath.endsWith('/Video_de_bienvenida.mp4') || cleanPath === '/Video_de_bienvenida.mp4') {
+    return BRAND_ASSETS.welcomeVideo;
+  }
+
+  return trimmed;
+};
+
 export const optimizeImageUrl = (
   url?: string | null,
   width: number = 600,
@@ -11,20 +45,22 @@ export const optimizeImageUrl = (
 ): string => {
   if (!url || typeof url !== 'string') return '';
 
+  const resolved = resolveMediaUrl(url);
+
   // Do not alter data URLs, blob URLs, or local SVG/assets
   if (
-    url.startsWith('data:') ||
-    url.startsWith('blob:') ||
-    url.endsWith('.svg') ||
-    url.startsWith('/')
+    resolved.startsWith('data:') ||
+    resolved.startsWith('blob:') ||
+    resolved.endsWith('.svg') ||
+    (resolved.startsWith('/') && !resolved.includes('oleveci-media'))
   ) {
-    return url;
+    return resolved;
   }
 
   // Handle Unsplash images
-  if (url.includes('images.unsplash.com')) {
+  if (resolved.includes('images.unsplash.com')) {
     try {
-      const urlObj = new URL(url);
+      const urlObj = new URL(resolved);
       urlObj.searchParams.set('auto', 'format');
       urlObj.searchParams.set('fit', 'crop');
       urlObj.searchParams.set('w', width.toString());
@@ -32,7 +68,7 @@ export const optimizeImageUrl = (
       return urlObj.toString();
     } catch {
       // Fallback regex replacement if URL constructor fails
-      let cleanUrl = url.replace(/([?&])w=\d+/, `$1w=${width}`);
+      let cleanUrl = resolved.replace(/([?&])w=\d+/, `$1w=${width}`);
       if (!cleanUrl.includes('w=')) {
         cleanUrl += (cleanUrl.includes('?') ? '&' : '?') + `w=${width}`;
       }
@@ -40,7 +76,7 @@ export const optimizeImageUrl = (
     }
   }
 
-  return url;
+  return resolved;
 };
 
 /**
@@ -86,4 +122,3 @@ export const getFeedCardImageUrl = (url?: string | null): string => {
 export const getReelPosterUrl = (url?: string | null): string => {
   return optimizeImageUrl(url, 1200, 85);
 };
-

@@ -9,7 +9,7 @@ export interface OleVeciPinOptions {
 }
 
 /**
- * Creates a Leaflet divIcon using the official OleVeci pin asset (/Icono_Oleveci_sin_fondo.png).
+ * Creates a Leaflet divIcon using the official OleVeci pin asset with inline SVG vector fallback.
  * Anchors accurately at the bottom tip of the pin onto the exact map coordinates.
  */
 export const createOleVeciPinIcon = (options: OleVeciPinOptions = {}) => {
@@ -43,10 +43,28 @@ export const createOleVeciPinIcon = (options: OleVeciPinOptions = {}) => {
             </div>`
           : ''
       }
+      <svg
+        viewBox="0 0 164 186"
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; filter: drop-shadow(0 6px 14px rgba(4,31,94,0.35));"
+      >
+        <path d="M82 178 C82 178 12 110 12 66 C12 28 43 2 82 2 C121 2 152 28 152 66 C152 110 82 178 82 178 Z" fill="url(#pinBlueGrad-${Math.round(anchorX)})" />
+        <circle cx="82" cy="66" r="36" fill="#ffffff" />
+        <path d="M66 58 L98 58 L94 74 L70 74 Z" fill="#021b58" />
+        <rect x="74" y="74" width="16" height="18" rx="2" fill="#007af7" />
+        <defs>
+          <linearGradient id="pinBlueGrad-${Math.round(anchorX)}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0088ff" />
+            <stop offset="50%" stop-color="#0062f5" />
+            <stop offset="100%" stop-color="#021b58" />
+          </linearGradient>
+        </defs>
+      </svg>
       <img
-        src="/Icono_Oleveci_sin_fondo.png?v=clean"
-        alt="OleVeci Pin"
-        style="width: 100%; height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 8px 16px rgba(4,31,94,0.35)); pointer-events: none;"
+        src="https://gpdqjihnnjetoxxfsfxh.supabase.co/storage/v1/object/public/oleveci-media/brand/Icono_Oleveci_sin_fondo.png"
+        alt=""
+        aria-hidden="true"
+        onerror="if(this.src!=='/Icono_Oleveci_sin_fondo.png'){this.src='/Icono_Oleveci_sin_fondo.png';}else{this.style.opacity='0';}"
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 8px 16px rgba(4,31,94,0.35)); pointer-events: none; z-index: 1;"
         draggable="false"
       />
       ${

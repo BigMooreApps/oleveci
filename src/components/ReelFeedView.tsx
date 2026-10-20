@@ -5,7 +5,7 @@ import { WhatsAppIcon } from './WhatsAppIcon';
 import { BusinessLocationMapModal } from './BusinessLocationMapModal';
 import { parseVideoUrl } from '../utils/videoHelper';
 import { normalizeToColombianWa } from '../utils/phoneUtils';
-import { getAvatarUrl, getReelPosterUrl } from '../utils/imageOptimization';
+import { getAvatarUrl, getReelPosterUrl, resolveMediaUrl, BRAND_ASSETS } from '../utils/imageOptimization';
 import { PlanBackgroundImages } from './InvitationCardPreview';
 import { MerchantCtaBanner } from './MerchantCtaBanner';
 import { formatPostShareText } from '../utils/shareUtils';
@@ -215,6 +215,7 @@ const ReelItemVideo = React.memo<ReelItemVideoProps>(({
           }}
           loading="eager"
           decoding="async"
+          onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
         />
       )}
 
@@ -224,7 +225,10 @@ const ReelItemVideo = React.memo<ReelItemVideoProps>(({
         src={shouldLoadMedia ? src : undefined}
         loop
         playsInline
+        muted={isMuted}
         preload={isCurrentActive ? 'auto' : shouldLoadMedia ? 'metadata' : 'none'}
+        onCanPlay={() => setIsVideoReady(true)}
+        onLoadedData={() => setIsVideoReady(true)}
         onPlaying={() => setIsVideoReady(true)}
         onError={handleVideoError}
         className={`absolute inset-0 w-full h-full ${
@@ -448,7 +452,7 @@ const ReelItem = React.memo<ReelItemProps>(({
         ) : hasVideo ? (
           shouldUseNativeVideo ? (
             <ReelItemVideo
-              src={parsedVideo.streamUrl || parsedVideo.directUrl || post.videoUrl || ''}
+              src={resolveMediaUrl(parsedVideo.streamUrl || parsedVideo.directUrl || post.videoUrl || '')}
               poster={getReelPosterUrl(post.imageUrl)}
               posterPosition={post.imagePosition}
               posterScale={post.imageScale}
@@ -692,11 +696,12 @@ const ReelItem = React.memo<ReelItemProps>(({
             title={post.isPlan ? `Ver plan: ${post.title}` : `Ver perfil del comercio: ${post.businessName}`}
           >
             <img
-              src={getAvatarUrl(post.businessLogo || post.imageUrl)}
+              src={getAvatarUrl(post.businessLogo || post.imageUrl) || BRAND_ASSETS.iconPng}
               alt={post.businessName}
               className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
               loading="eager"
               decoding="async"
+            onError={(e) => { const target = e.currentTarget as HTMLImageElement; if (target.src !== BRAND_ASSETS.iconPng) target.src = BRAND_ASSETS.iconPng; }}
             />
           </div>
           <span className="text-[10px] font-extrabold text-white mt-1 drop-shadow-md text-center max-w-[60px] truncate leading-tight">

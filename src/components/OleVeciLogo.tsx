@@ -1,4 +1,5 @@
 import React from 'react';
+import { BRAND_ASSETS } from '../utils/imageOptimization';
 
 interface OleVeciIconProps {
   className?: string;
@@ -25,7 +26,7 @@ export const OleVeciIcon: React.FC<OleVeciIconProps> = ({
   if (!hasError) {
     return (
       <img
-        src="/Icono_Oleveci_sin_fondo.png?v=clean"
+        src={BRAND_ASSETS.iconPng}
         alt="OleVeci Icon"
         style={{
           width: typeof size === 'number' ? `${size}px` : size,
@@ -33,7 +34,7 @@ export const OleVeciIcon: React.FC<OleVeciIconProps> = ({
           aspectRatio: '164 / 186',
         }}
         className={`shrink-0 select-none object-contain inline-block drop-shadow-xs ${className}`}
-        onError={() => setHasError(true)}
+        onError={(e) => { const target = e.currentTarget as HTMLImageElement; if (target.src !== window.location.origin + '/Icono_Oleveci_sin_fondo.png') { target.src = '/Icono_Oleveci_sin_fondo.png'; } else { setHasError(true); } }}
         draggable={false}
         loading="eager"
       />
@@ -310,10 +311,10 @@ export const OleVeciLogo: React.FC<OleVeciLogoProps> = ({
         className={`inline-flex items-center select-none bg-transparent ${onClick ? 'cursor-pointer' : ''} ${className}`}
       >
         <img
-          src="/Logo_OleVeci.png?v=transparent"
+          src={BRAND_ASSETS.logoPng}
           alt="OleVeci - Negocios locales"
           className={`${imageSizeClasses[size]} w-auto object-contain shrink-0 bg-transparent`}
-          onError={() => setImageError(true)}
+          onError={(e) => { const target = e.currentTarget as HTMLImageElement; if (target.src !== window.location.origin + '/Logo_OleVeci.png') { target.src = '/Logo_OleVeci.png'; } else { setImageError(true); } }}
           loading="eager"
           referrerPolicy="no-referrer"
         />
