@@ -202,7 +202,7 @@ export const VeciInMapsView: React.FC<VeciInMapsViewProps> = ({
 
       // Clean icon using official OleVeci pin without permanent text labels ("solo el icono")
       const icon = createOleVeciPinIcon({
-        size: isSelected ? 48 : 38,
+        size: isSelected ? 50 : 40,
         pulse: isSelected,
       });
 
