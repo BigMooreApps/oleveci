@@ -1109,6 +1109,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (cloud.categories && cloud.categories.length > 0) setCategories(cloud.categories);
       if (cloud.planCategories && cloud.planCategories.length > 0) setPlanCategories(cloud.planCategories);
       if (cloud.postTypes && cloud.postTypes.length > 0) setPostTypes(cloud.postTypes);
+      if (cloud.readyPlans && cloud.readyPlans.length > 0) setReadyPlans(cloud.readyPlans);
     });
   }, []);
 
@@ -2867,6 +2868,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return [plan, ...prev];
     });
 
+    supabaseService.upsertReadyPlan(plan);
+
     // Also persist plan to server for instant cross-device sharing via deep link
     fetch('/api/plans', {
       method: 'POST',
@@ -2876,13 +2879,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateReadyPlan = (id: string, data: Partial<SimulatedReadyPlan>) => {
-    setReadyPlans((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, ...data } : p))
-    );
+    setReadyPlans((prev) => {
+      const updatedList = prev.map((p) => (p.id === id ? { ...p, ...data } : p));
+      const target = updatedList.find((p) => p.id === id);
+      if (target) supabaseService.upsertReadyPlan(target);
+      return updatedList;
+    });
   };
 
   const deleteReadyPlan = (id: string) => {
     setReadyPlans((prev) => prev.filter((p) => p.id !== id));
+    supabaseService.deleteReadyPlan(id);
   };
 
   const resetReadyPlansToDefault = () => {

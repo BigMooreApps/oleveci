@@ -1193,7 +1193,8 @@ app.all('/api/video/stream', async (req, res) => {
 
 // Vite middleware & Dynamic Open Graph Static Serving
 async function startServer() {
-  const isDev = process.env.NODE_ENV !== 'production';
+  const isCjsBundle = typeof __filename !== 'undefined' && (__filename.endsWith('.cjs') || __filename.includes('dist'));
+  const isDev = process.env.NODE_ENV !== 'production' && !isCjsBundle;
   let vite: any = null;
 
   app.use(express.static(path.join(process.cwd(), 'public')));

@@ -194,6 +194,7 @@ async function seed() {
     cover_image: rp.coverImage || null,
     stops: rp.postIds || [],
     is_active: true,
+    plan_data: rp,
   }));
   const { error: errPlans } = await supabase.from('ready_plans').upsert(rPlans);
   if (errPlans) console.error('Error sembrando planes:', errPlans);

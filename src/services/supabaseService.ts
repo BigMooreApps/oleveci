@@ -1,5 +1,7 @@
 import { supabase } from '../utils/supabaseClient';
 import { Business, Post, Municipality, CitySector, Category, PlanCategory, PostTypeConfig } from '../types';
+import { SimulatedReadyPlan } from '../data/readyPlansData';
+import { THEMES } from '../components/InvitationCardPreview';
 
 /**
  * Supabase Data Service for OleVeci
@@ -21,6 +23,7 @@ export const supabaseService = {
         { data: categories, error: errCats },
         { data: planCategories, error: errPlanCats },
         { data: postTypes, error: errPostTypes },
+        { data: readyPlans, error: errReadyPlans },
       ] = await Promise.all([
         supabase.from('businesses').select('*'),
         supabase.from('posts').select('*'),
@@ -29,6 +32,7 @@ export const supabaseService = {
         supabase.from('categories').select('*'),
         supabase.from('plan_categories').select('*'),
         supabase.from('post_types').select('*'),
+        supabase.from('ready_plans').select('*'),
       ]);
 
       if (errBiz || errPosts) {
@@ -43,6 +47,7 @@ export const supabaseService = {
         categories: categories || null,
         planCategories: planCategories ? planCategories.map(mapDbPlanCategoryToClient) : null,
         postTypes: postTypes ? postTypes.map(mapDbPostTypeToClient) : null,
+        readyPlans: readyPlans ? readyPlans.map(mapDbReadyPlanToClient) : null,
       };
     } catch (err) {
       console.warn('Supabase offline o error de red, usando almacenamiento local:', err);
@@ -159,6 +164,43 @@ export const supabaseService = {
       await supabase.from('posts').delete().eq('id', postId);
     } catch (err) {
       console.warn('Error eliminando publicación en Supabase:', err);
+    }
+  },
+
+  /**
+   * Upsert a ready plan into Supabase
+   */
+  async upsertReadyPlan(plan: SimulatedReadyPlan) {
+    try {
+      const dbRecord = {
+        id: plan.id,
+        title: plan.planTitle || 'Plan Sugerido',
+        slug: plan.id,
+        category_id: plan.category || null,
+        city: plan.municipality || 'Cajicá',
+        budget: `$${(plan.estimatedBudget || 0).toLocaleString('es-CO')} COP`,
+        budget_num: plan.estimatedBudget || 0,
+        duration: plan.scheduledTime || '2 a 3 horas',
+        highlight: plan.personalNote || null,
+        cover_image: plan.coverImage || null,
+        stops: plan.postIds || [],
+        is_active: true,
+        plan_data: plan,
+      };
+      await supabase.from('ready_plans').upsert(dbRecord);
+    } catch (err) {
+      console.warn('Error sincronizando plan con Supabase:', err);
+    }
+  },
+
+  /**
+   * Delete a ready plan from Supabase
+   */
+  async deleteReadyPlan(planId: string) {
+    try {
+      await supabase.from('ready_plans').delete().eq('id', planId);
+    } catch (err) {
+      console.warn('Error eliminando plan en Supabase:', err);
     }
   },
 
@@ -312,5 +354,29 @@ function mapDbPostTypeToClient(db: any): PostTypeConfig {
     badgeText: db.badge_text,
     description: db.description,
     order: db.display_order || 0,
+  };
+}
+
+function mapDbReadyPlanToClient(db: any): SimulatedReadyPlan {
+  if (db.plan_data && typeof db.plan_data === 'object' && db.plan_data.id) {
+    return db.plan_data as SimulatedReadyPlan;
+  }
+  return {
+    id: db.id,
+    planTitle: db.title,
+    scheduledTime: db.duration || '2 a 3 horas',
+    coverImage: db.cover_image,
+    personalNote: db.highlight,
+    hidePrices: false,
+    cardTemplate: 'vip_club',
+    theme: THEMES.dark_vip,
+    bgLayout: 'cinematic',
+    postIds: Array.isArray(db.stops) ? db.stops : [],
+    category: db.category_id || 'plan_otros',
+    estimatedBudget: Number(db.budget_num) || 0,
+    municipality: db.city || 'Cajicá',
+    timeOfDay: 'tarde',
+    dayType: 'weekend',
+    tags: [],
   };
 }
