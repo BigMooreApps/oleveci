@@ -1287,27 +1287,6 @@ export const ReelFeedView: React.FC<ReelFeedViewProps> = ({
         </div>
       )}
 
-      {/* Floating active plan banner when filtered */}
-      {activeFiltersCount > 0 && (
-        <div className="absolute top-3 inset-x-0 z-30 flex justify-center pointer-events-none px-3">
-          <div className="pointer-events-auto bg-black/80 text-white backdrop-blur-md pl-3 pr-2 py-1 rounded-full border border-amber-400/50 shadow-xl flex items-center gap-2 text-xs animate-in fade-in slide-in-from-top-2 duration-200">
-            <Dices className="w-4 h-4 text-amber-300 shrink-0" />
-            <span className="text-[11px] text-amber-100 font-medium">
-              Plan filtrado · <strong className="text-white font-bold">{posts.length} {posts.length === 1 ? 'resultado' : 'resultados'}</strong>
-            </span>
-            {onClearFilters && (
-              <button
-                type="button"
-                onClick={onClearFilters}
-                className="text-[10px] bg-white/20 hover:bg-white/30 text-white font-bold px-2 py-0.5 rounded-full transition cursor-pointer"
-                title="Ver todos los reels"
-              >
-                Ver todos
-              </button>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Up / Down navigation arrows (hidden on touch, visible on desktop) */}
       <div className="hidden sm:flex flex-col gap-2 absolute left-3 top-1/2 -translate-y-1/2 z-30 pointer-events-auto">
