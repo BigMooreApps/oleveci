@@ -20,18 +20,24 @@ export const BRAND_ASSETS = {
 export const resolveMediaUrl = (url?: string | null): string => {
   if (!url || typeof url !== 'string') return '';
   const trimmed = url.trim();
-  const cleanPath = trimmed.split('?')[0].replace(/^\.?\//, '/');
 
-  if (cleanPath.endsWith('/Icono_Oleveci_sin_fondo.png') || cleanPath === '/Icono_Oleveci_sin_fondo.png') {
+  // If already pointing to Supabase or valid remote CDN, return as-is
+  if (trimmed.includes('supabase.co/storage') || trimmed.startsWith('data:') || trimmed.startsWith('blob:')) {
+    return trimmed;
+  }
+
+  const lower = trimmed.toLowerCase();
+
+  if (lower.includes('icono_oleveci') || lower.includes('icono_oleveci_sin_fondo')) {
     return BRAND_ASSETS.iconPng;
   }
-  if (cleanPath.endsWith('/Logo_OleVeci.png') || cleanPath === '/Logo_OleVeci.png') {
+  if (lower.includes('logo_oleveci')) {
     return BRAND_ASSETS.logoPng;
   }
-  if (cleanPath.endsWith('/poster_bienvenida.jpg') || cleanPath === '/poster_bienvenida.jpg') {
+  if (lower.includes('poster_bienvenida')) {
     return BRAND_ASSETS.welcomePoster;
   }
-  if (cleanPath.endsWith('/Video_de_bienvenida.mp4') || cleanPath === '/Video_de_bienvenida.mp4') {
+  if (lower.includes('video_de_bienvenida')) {
     return BRAND_ASSETS.welcomeVideo;
   }
 
@@ -83,7 +89,8 @@ export const optimizeImageUrl = (
  * Thumbnail size for circular business logos & user avatars (48px - 64px display)
  */
 export const getAvatarUrl = (url?: string | null): string => {
-  return optimizeImageUrl(url, 96, 75);
+  const resolved = resolveMediaUrl(url);
+  return optimizeImageUrl(resolved || BRAND_ASSETS.iconPng, 96, 75);
 };
 
 /**
@@ -120,5 +127,6 @@ export const getFeedCardImageUrl = (url?: string | null): string => {
  * Fullscreen reel backdrop / video poster size (720px - 900px display)
  */
 export const getReelPosterUrl = (url?: string | null): string => {
-  return optimizeImageUrl(url, 1200, 85);
+  const resolved = resolveMediaUrl(url);
+  return optimizeImageUrl(resolved || BRAND_ASSETS.welcomePoster, 1200, 85);
 };

@@ -557,6 +557,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               // Ensure status, subscription and canonical username are active
               merged[idx] = {
                 ...merged[idx],
+                logo: initialBiz.logo || merged[idx].logo,
                 username: initialBiz.username || merged[idx].username,
                 status: 'active',
                 subscription: {
@@ -609,7 +610,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                 merged[idx] = {
                   ...merged[idx],
                   ...initialPost,
+                  imageUrl: initialPost.imageUrl || merged[idx].imageUrl,
                   videoUrl: initialPost.videoUrl || merged[idx].videoUrl,
+                  businessLogo: initialPost.businessLogo || merged[idx].businessLogo,
                   mediaType: initialPost.mediaType || merged[idx].mediaType,
                 };
               }

@@ -1,4 +1,6 @@
-# Nixpacks configuration for OleVeci on Easypanel / Railway
+# Nixpacks configuration for OleVeci on Easypanel / Railway / Hostinger
+providers = ['node']
+
 [phases.setup]
 nixPkgs = ['nodejs_20', 'npm-10_x', 'ffmpeg', 'python3']
 

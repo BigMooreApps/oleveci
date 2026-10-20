@@ -195,6 +195,7 @@ const ReelItemVideo = React.memo<ReelItemVideoProps>(({
             alt=""
             aria-hidden="true"
             className="w-full h-full object-cover blur-2xl scale-125 opacity-40"
+            onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
           />
           <div className="absolute inset-0 bg-black/40" />
         </div>
@@ -229,12 +230,13 @@ const ReelItemVideo = React.memo<ReelItemVideoProps>(({
         preload={isCurrentActive ? 'auto' : shouldLoadMedia ? 'metadata' : 'none'}
         onCanPlay={() => setIsVideoReady(true)}
         onLoadedData={() => setIsVideoReady(true)}
+        onLoadedMetadata={() => setIsVideoReady(true)}
         onPlaying={() => setIsVideoReady(true)}
         onError={handleVideoError}
         className={`absolute inset-0 w-full h-full ${
           videoFit === 'contain' ? 'object-contain' : 'object-cover'
         } select-none z-10 transition-opacity duration-200 ${
-          isVideoReady && isCurrentActive ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          (isVideoReady || isPlaying) && isCurrentActive ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         style={{
           objectPosition: videoPosition ? `${videoPosition.x}% ${videoPosition.y}%` : '50% 50%',
@@ -692,16 +694,24 @@ const ReelItem = React.memo<ReelItemProps>(({
                 onSelectBusiness(post.businessId);
               }
             }}
-            className="relative w-12 h-12 sm:w-13 sm:h-13 rounded-full border-2 border-white ring-2 ring-cyan-400/70 shadow-2xl overflow-hidden bg-neutral-900 cursor-pointer active:scale-90 transition group hover:ring-cyan-300"
+            className="relative w-12 h-12 sm:w-13 sm:h-13 rounded-full border-2 border-white ring-2 ring-cyan-400/70 shadow-2xl overflow-hidden bg-[#021b58] cursor-pointer active:scale-90 transition group hover:ring-cyan-300 flex items-center justify-center"
             title={post.isPlan ? `Ver plan: ${post.title}` : `Ver perfil del comercio: ${post.businessName}`}
           >
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#021b58] to-[#007af7] text-white font-extrabold text-[11px] select-none">Veci</div>
             <img
-              src={getAvatarUrl(post.businessLogo || post.imageUrl) || BRAND_ASSETS.iconPng}
+              src={resolveMediaUrl(getAvatarUrl(post.businessLogo || post.imageUrl) || BRAND_ASSETS.iconPng)}
               alt={post.businessName}
-              className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+              className="relative z-10 w-full h-full object-cover group-hover:scale-110 transition duration-300"
               loading="eager"
               decoding="async"
-            onError={(e) => { const target = e.currentTarget as HTMLImageElement; if (target.src !== BRAND_ASSETS.iconPng) target.src = BRAND_ASSETS.iconPng; }}
+              onError={(e) => {
+                const target = e.currentTarget as HTMLImageElement;
+                if (target.src !== BRAND_ASSETS.iconPng) {
+                  target.src = BRAND_ASSETS.iconPng;
+                } else {
+                  target.style.display = 'none';
+                }
+              }}
             />
           </div>
           <span className="text-[10px] font-extrabold text-white mt-1 drop-shadow-md text-center max-w-[60px] truncate leading-tight">
