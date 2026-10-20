@@ -1,5 +1,5 @@
-# Dockerfile for OleVeci v8 Production Deployment
-FROM node:20-slim
+# Dockerfile for OleVeci Production Deployment on Easypanel / Hostinger VPS
+FROM node:22-slim
 
 WORKDIR /app
 
@@ -29,7 +29,12 @@ RUN npm run build
 ENV NODE_ENV=production
 ENV PORT=3000
 
-EXPOSE 3000 80
+# Expose both port 80 and port 3000 for zero-configuration Traefik / Easypanel routing
+EXPOSE 80 3000
+
+# Health check to ensure Traefik routes only when OleVeci is fully up
+HEALTHCHECK --interval=20s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -f http://127.0.0.1:3000/ || curl -f http://127.0.0.1:80/ || exit 1
 
 # Start production server
 CMD ["node", "dist/server.cjs"]

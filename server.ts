@@ -1552,11 +1552,28 @@ async function startServer() {
     }
   });
 
-  const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log(`OleVeci Server running on http://0.0.0.0:${PORT}`);
-    // Pre-warm database video posts in background after server is up
+  const primaryPort = PORT;
+  const secondaryPort = primaryPort === 80 ? 3000 : 80;
+
+  const server = app.listen(primaryPort, '0.0.0.0', () => {
+    console.log(`OleVeci Server running on http://0.0.0.0:${primaryPort}`);
     setTimeout(warmUpDatabaseVideos, 1500);
   });
+  server.on('error', (err: any) => {
+    console.warn(`[Server] Primary port ${primaryPort} notice: ${err.message}`);
+  });
+
+  // Bind to alternate port (80 or 3000) so Easypanel / Traefik routes succeed regardless of configured port
+  try {
+    const altServer = app.listen(secondaryPort, '0.0.0.0', () => {
+      console.log(`OleVeci Server also listening on http://0.0.0.0:${secondaryPort}`);
+    });
+    altServer.on('error', () => {
+      // Alternate port unavailable (e.g. non-root on Linux) - safely ignored
+    });
+  } catch {
+    // Ignored
+  }
 }
 
 async function warmUpDatabaseVideos(): Promise<void> {

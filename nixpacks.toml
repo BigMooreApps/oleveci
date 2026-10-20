@@ -2,7 +2,7 @@
 providers = ['node']
 
 [phases.setup]
-nixPkgs = ['nodejs_20', 'npm-10_x', 'ffmpeg', 'python3']
+nixPkgs = ['nodejs_22', 'npm-10_x', 'ffmpeg', 'python3']
 
 [phases.install]
 cmds = ['npm install --include=optional']
