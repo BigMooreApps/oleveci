@@ -3,7 +3,7 @@
     "id": "post_oleveci_bienvenida",
     "businessId": "biz_oleveci",
     "businessName": "OleVeci",
-    "businessLogo": "/Icono_Oleveci_sin_fondo.png?v=clean",
+    "businessLogo": "https://gpdqjihnnjetoxxfsfxh.supabase.co/storage/v1/object/public/oleveci-media/brand/Icono_Oleveci_sin_fondo.png",
     "businessCity": "Cajicá",
     "businessSector": "Centro",
     "businessWhatsapp": "573100000000",
@@ -16,15 +16,14 @@
     "type": "plan",
     "title": "¡Bienvenido a OleVeci! Tu Guía Local",
     "description": "¡Bienvenido a OleVeci.com! Acá encontrarás los mejores planes, promos y experiencias en tu municipio. Descubre lo mejor de Cajicá, Chía, Zipaquirá y Sabana Centro.",
-    "imageUrl": "/poster_bienvenida.jpg",
-    "videoUrl": "/Video_de_bienvenida.mp4",
+    "imageUrl": "https://gpdqjihnnjetoxxfsfxh.supabase.co/storage/v1/object/public/oleveci-media/posts/poster_bienvenida.jpg",
+    "videoUrl": "https://gpdqjihnnjetoxxfsfxh.supabase.co/storage/v1/object/public/oleveci-media/posts/Video_de_bienvenida.mp4",
     "mediaType": "video",
-    "startsAt": "2026-10-02T04:48:45.770Z",
-    "expiresAt": "2027-10-02T16:48:45.770Z",
+    "startsAt": "2026-10-20T07:14:46.229Z",
+    "expiresAt": "2027-10-20T19:14:46.229Z",
     "expiryLabel": "¡Publicación destacada permanente!",
     "categoryId": "cat_planes_eventos",
     "planCategoryId": "plan_tarde_amigos",
-    "planCategoryName": "Tarde de amigos",
     "featured": true,
     "tags": [
       "oleveci",
@@ -36,16 +35,444 @@
       "video",
       "reel"
     ],
-    "createdAt": "2026-10-02T04:48:45.770Z",
+    "createdAt": "2026-10-20T07:14:46.229Z",
     "metrics": {
       "views": 3820,
       "whatsappClicks": 490,
       "mapsClicks": 285,
       "calls": 64,
-      "shares": 340
+      "shares": 340,
+      "dailyMetrics": {
+        "2026-09-06": {
+          "views": 69,
+          "whatsappClicks": 9,
+          "mapsClicks": 5,
+          "calls": 1,
+          "shares": 6,
+          "qrRedemptions": 0
+        },
+        "2026-09-07": {
+          "views": 42,
+          "whatsappClicks": 5,
+          "mapsClicks": 3,
+          "calls": 1,
+          "shares": 4,
+          "qrRedemptions": 0
+        },
+        "2026-09-08": {
+          "views": 48,
+          "whatsappClicks": 6,
+          "mapsClicks": 4,
+          "calls": 1,
+          "shares": 4,
+          "qrRedemptions": 0
+        },
+        "2026-09-09": {
+          "views": 61,
+          "whatsappClicks": 8,
+          "mapsClicks": 4,
+          "calls": 1,
+          "shares": 5,
+          "qrRedemptions": 0
+        },
+        "2026-09-10": {
+          "views": 74,
+          "whatsappClicks": 10,
+          "mapsClicks": 6,
+          "calls": 1,
+          "shares": 7,
+          "qrRedemptions": 0
+        },
+        "2026-09-11": {
+          "views": 97,
+          "whatsappClicks": 12,
+          "mapsClicks": 7,
+          "calls": 2,
+          "shares": 9,
+          "qrRedemptions": 0
+        },
+        "2026-09-12": {
+          "views": 106,
+          "whatsappClicks": 14,
+          "mapsClicks": 8,
+          "calls": 2,
+          "shares": 9,
+          "qrRedemptions": 0
+        },
+        "2026-09-13": {
+          "views": 79,
+          "whatsappClicks": 10,
+          "mapsClicks": 6,
+          "calls": 1,
+          "shares": 7,
+          "qrRedemptions": 0
+        },
+        "2026-09-14": {
+          "views": 47,
+          "whatsappClicks": 6,
+          "mapsClicks": 3,
+          "calls": 1,
+          "shares": 4,
+          "qrRedemptions": 0
+        },
+        "2026-09-15": {
+          "views": 52,
+          "whatsappClicks": 7,
+          "mapsClicks": 4,
+          "calls": 1,
+          "shares": 5,
+          "qrRedemptions": 0
+        },
+        "2026-09-16": {
+          "views": 63,
+          "whatsappClicks": 8,
+          "mapsClicks": 5,
+          "calls": 1,
+          "shares": 6,
+          "qrRedemptions": 0
+        },
+        "2026-09-17": {
+          "views": 77,
+          "whatsappClicks": 10,
+          "mapsClicks": 6,
+          "calls": 1,
+          "shares": 7,
+          "qrRedemptions": 0
+        },
+        "2026-09-18": {
+          "views": 103,
+          "whatsappClicks": 13,
+          "mapsClicks": 8,
+          "calls": 2,
+          "shares": 9,
+          "qrRedemptions": 0
+        },
+        "2026-09-19": {
+          "views": 116,
+          "whatsappClicks": 15,
+          "mapsClicks": 9,
+          "calls": 2,
+          "shares": 10,
+          "qrRedemptions": 0
+        },
+        "2026-09-20": {
+          "views": 88,
+          "whatsappClicks": 11,
+          "mapsClicks": 7,
+          "calls": 2,
+          "shares": 8,
+          "qrRedemptions": 0
+        },
+        "2026-09-21": {
+          "views": 52,
+          "whatsappClicks": 7,
+          "mapsClicks": 4,
+          "calls": 1,
+          "shares": 5,
+          "qrRedemptions": 0
+        },
+        "2026-09-22": {
+          "views": 56,
+          "whatsappClicks": 7,
+          "mapsClicks": 4,
+          "calls": 1,
+          "shares": 5,
+          "qrRedemptions": 0
+        },
+        "2026-09-23": {
+          "views": 65,
+          "whatsappClicks": 8,
+          "mapsClicks": 5,
+          "calls": 1,
+          "shares": 6,
+          "qrRedemptions": 0
+        },
+        "2026-09-24": {
+          "views": 79,
+          "whatsappClicks": 10,
+          "mapsClicks": 6,
+          "calls": 1,
+          "shares": 7,
+          "qrRedemptions": 0
+        },
+        "2026-09-25": {
+          "views": 107,
+          "whatsappClicks": 14,
+          "mapsClicks": 8,
+          "calls": 2,
+          "shares": 10,
+          "qrRedemptions": 0
+        },
+        "2026-09-26": {
+          "views": 125,
+          "whatsappClicks": 16,
+          "mapsClicks": 9,
+          "calls": 2,
+          "shares": 11,
+          "qrRedemptions": 0
+        },
+        "2026-09-27": {
+          "views": 98,
+          "whatsappClicks": 13,
+          "mapsClicks": 7,
+          "calls": 2,
+          "shares": 9,
+          "qrRedemptions": 0
+        },
+        "2026-09-28": {
+          "views": 59,
+          "whatsappClicks": 7,
+          "mapsClicks": 4,
+          "calls": 1,
+          "shares": 5,
+          "qrRedemptions": 0
+        },
+        "2026-09-29": {
+          "views": 61,
+          "whatsappClicks": 8,
+          "mapsClicks": 5,
+          "calls": 1,
+          "shares": 5,
+          "qrRedemptions": 0
+        },
+        "2026-09-30": {
+          "views": 68,
+          "whatsappClicks": 9,
+          "mapsClicks": 5,
+          "calls": 1,
+          "shares": 6,
+          "qrRedemptions": 0
+        },
+        "2026-10-01": {
+          "views": 80,
+          "whatsappClicks": 10,
+          "mapsClicks": 6,
+          "calls": 1,
+          "shares": 7,
+          "qrRedemptions": 0
+        },
+        "2026-10-02": {
+          "views": 110,
+          "whatsappClicks": 14,
+          "mapsClicks": 8,
+          "calls": 2,
+          "shares": 10,
+          "qrRedemptions": 0
+        },
+        "2026-10-03": {
+          "views": 133,
+          "whatsappClicks": 17,
+          "mapsClicks": 10,
+          "calls": 2,
+          "shares": 12,
+          "qrRedemptions": 0
+        },
+        "2026-10-04": {
+          "views": 108,
+          "whatsappClicks": 14,
+          "mapsClicks": 8,
+          "calls": 2,
+          "shares": 10,
+          "qrRedemptions": 0
+        },
+        "2026-10-05": {
+          "views": 65,
+          "whatsappClicks": 8,
+          "mapsClicks": 5,
+          "calls": 1,
+          "shares": 6,
+          "qrRedemptions": 0
+        },
+        "2026-10-06": {
+          "views": 67,
+          "whatsappClicks": 9,
+          "mapsClicks": 5,
+          "calls": 1,
+          "shares": 6,
+          "qrRedemptions": 0
+        },
+        "2026-10-07": {
+          "views": 71,
+          "whatsappClicks": 9,
+          "mapsClicks": 5,
+          "calls": 1,
+          "shares": 6,
+          "qrRedemptions": 0
+        },
+        "2026-10-08": {
+          "views": 82,
+          "whatsappClicks": 10,
+          "mapsClicks": 6,
+          "calls": 1,
+          "shares": 7,
+          "qrRedemptions": 0
+        },
+        "2026-10-09": {
+          "views": 112,
+          "whatsappClicks": 14,
+          "mapsClicks": 8,
+          "calls": 2,
+          "shares": 10,
+          "qrRedemptions": 0
+        },
+        "2026-10-10": {
+          "views": 138,
+          "whatsappClicks": 18,
+          "mapsClicks": 10,
+          "calls": 2,
+          "shares": 12,
+          "qrRedemptions": 0
+        },
+        "2026-10-11": {
+          "views": 116,
+          "whatsappClicks": 15,
+          "mapsClicks": 9,
+          "calls": 2,
+          "shares": 10,
+          "qrRedemptions": 0
+        },
+        "2026-10-12": {
+          "views": 72,
+          "whatsappClicks": 9,
+          "mapsClicks": 5,
+          "calls": 1,
+          "shares": 6,
+          "qrRedemptions": 0
+        },
+        "2026-10-13": {
+          "views": 74,
+          "whatsappClicks": 9,
+          "mapsClicks": 6,
+          "calls": 1,
+          "shares": 7,
+          "qrRedemptions": 0
+        },
+        "2026-10-14": {
+          "views": 77,
+          "whatsappClicks": 10,
+          "mapsClicks": 6,
+          "calls": 1,
+          "shares": 7,
+          "qrRedemptions": 0
+        },
+        "2026-10-15": {
+          "views": 84,
+          "whatsappClicks": 11,
+          "mapsClicks": 6,
+          "calls": 2,
+          "shares": 7,
+          "qrRedemptions": 0
+        },
+        "2026-10-16": {
+          "views": 113,
+          "whatsappClicks": 15,
+          "mapsClicks": 8,
+          "calls": 2,
+          "shares": 10,
+          "qrRedemptions": 0
+        },
+        "2026-10-17": {
+          "views": 142,
+          "whatsappClicks": 18,
+          "mapsClicks": 11,
+          "calls": 2,
+          "shares": 13,
+          "qrRedemptions": 0
+        },
+        "2026-10-18": {
+          "views": 123,
+          "whatsappClicks": 16,
+          "mapsClicks": 9,
+          "calls": 2,
+          "shares": 11,
+          "qrRedemptions": 0
+        },
+        "2026-10-19": {
+          "views": 79,
+          "whatsappClicks": 10,
+          "mapsClicks": 6,
+          "calls": 1,
+          "shares": 7,
+          "qrRedemptions": 0
+        },
+        "2026-10-20": {
+          "views": 82,
+          "whatsappClicks": 11,
+          "mapsClicks": 6,
+          "calls": 2,
+          "shares": 7,
+          "qrRedemptions": 0
+        }
+      }
     },
     "aspectRatio": "9:16",
-    "imageFit": "cover"
+    "imagePosition": {
+      "x": 50,
+      "y": 50
+    },
+    "imageScale": 1,
+    "imageFit": "cover",
+    "videoPosition": {
+      "x": 52,
+      "y": 14
+    },
+    "videoScale": 1,
+    "videoFit": "cover",
+    "validitySchedule": {
+      "mode": "table",
+      "scheduleTable": [
+        {
+          "dia": "Lunes",
+          "dayIndex": 1,
+          "active": true,
+          "horaInicio": "",
+          "horaFin": ""
+        },
+        {
+          "dia": "Martes",
+          "dayIndex": 2,
+          "active": true,
+          "horaInicio": "",
+          "horaFin": ""
+        },
+        {
+          "dia": "Miércoles",
+          "dayIndex": 3,
+          "active": true,
+          "horaInicio": "",
+          "horaFin": ""
+        },
+        {
+          "dia": "Jueves",
+          "dayIndex": 4,
+          "active": true,
+          "horaInicio": "",
+          "horaFin": ""
+        },
+        {
+          "dia": "Viernes",
+          "dayIndex": 5,
+          "active": true,
+          "horaInicio": "",
+          "horaFin": ""
+        },
+        {
+          "dia": "Sábado",
+          "dayIndex": 6,
+          "active": true,
+          "horaInicio": "",
+          "horaFin": ""
+        },
+        {
+          "dia": "Domingo",
+          "dayIndex": 0,
+          "active": true,
+          "horaInicio": "",
+          "horaFin": ""
+        }
+      ]
+    },
+    "planCategoryName": "Tarde de amigos"
   },
   {
     "id": "post_promo_smash_combo",
@@ -1833,7 +2260,7 @@
     "type": "promotion",
     "title": "Consejos Rápidos",
     "description": "Shorts de consejos de redacción y productividad",
-    "imageUrl": "https://i.ytimg.com/vi/pVRefGmQDJM/hqdefault.jpg",
+    "imageUrl": "/api/video/poster?url=https%3A%2F%2Fwww.youtube.com%2Fshorts%2FpVRefGmQDJM",
     "videoUrl": "https://www.youtube.com/shorts/pVRefGmQDJM",
     "mediaType": "video",
     "aspectRatio": "9:16",
@@ -1863,371 +2290,18 @@
     "id": "post_yt_shorts_sample",
     "createdAt": "2026-10-05T21:40:00.000Z",
     "metrics": {
-      "views": 5,
+      "views": 7,
       "whatsappClicks": 0,
       "mapsClicks": 0,
       "calls": 0,
-      "shares": 0,
+      "shares": 1,
       "dailyMetrics": {
-        "2026-09-05": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-06": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-07": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-08": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-09": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-10": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-11": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-12": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-13": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-14": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-15": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-16": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-17": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-18": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-19": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-20": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-21": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-22": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-23": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-24": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-25": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-26": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-27": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-28": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-29": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-30": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-01": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-02": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-03": {
-          "views": 1,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-04": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-05": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-06": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
         "2026-10-07": {
-          "views": 0,
+          "views": 2,
           "whatsappClicks": 0,
           "mapsClicks": 0,
           "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-08": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-09": {
-          "views": 1,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-10": {
-          "views": 1,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-11": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-12": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-13": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-14": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-15": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-16": {
-          "views": 1,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-17": {
-          "views": 1,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-18": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-19": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
+          "shares": 1
         }
       }
     }
@@ -2248,7 +2322,7 @@
     "type": "promotion",
     "title": "Ciclismo y Comunidad",
     "description": "Reel de Facebook sobre seguridad y comunidad ciclista",
-    "imageUrl": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=720&q=80",
+    "imageUrl": "/api/video/poster?url=https%3A%2F%2Fwww.facebook.com%2Freel%2F4566982953578273",
     "videoUrl": "https://www.facebook.com/reel/4566982953578273",
     "mediaType": "video",
     "aspectRatio": "9:16",
@@ -2278,371 +2352,18 @@
     "id": "post_fb_reel_sample",
     "createdAt": "2026-10-05T21:41:00.000Z",
     "metrics": {
-      "views": 4,
+      "views": 6,
       "whatsappClicks": 0,
       "mapsClicks": 0,
       "calls": 0,
       "shares": 0,
       "dailyMetrics": {
-        "2026-09-05": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-06": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-07": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-08": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-09": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-10": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-11": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-12": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-13": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-14": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-15": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-16": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-17": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-18": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-19": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-20": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-21": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-22": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-23": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-24": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-25": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-26": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-27": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-28": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-29": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-09-30": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-01": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-02": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-03": {
-          "views": 1,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-04": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-05": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-06": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
         "2026-10-07": {
-          "views": 0,
+          "views": 2,
           "whatsappClicks": 0,
           "mapsClicks": 0,
           "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-08": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-09": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-10": {
-          "views": 1,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-11": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-12": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-13": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-14": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-15": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-16": {
-          "views": 1,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-17": {
-          "views": 1,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-18": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
-        },
-        "2026-10-19": {
-          "views": 0,
-          "whatsappClicks": 0,
-          "mapsClicks": 0,
-          "calls": 0,
-          "shares": 0,
-          "qrRedemptions": 0
+          "shares": 0
         }
       }
     }
