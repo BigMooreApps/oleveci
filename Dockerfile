@@ -17,7 +17,7 @@ RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_lin
 
 # Install build & runtime dependencies
 COPY package*.json ./
-RUN npm ci
+RUN npm install --include=optional
 
 # Copy full application source code
 COPY . .
